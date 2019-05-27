@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/widgets/FlutterTabBarView.dart';
+import 'dart:math' as math;
+import 'package:flutter_demo/widgets/SearchTextFieldWidget.dart';
 
 var titleList = ['电影'
 , '电视'
@@ -34,8 +36,7 @@ class _HomePageState extends State<HomePage>
 
   List<Widget> getTabList() {
     return titleList
-        .map((item) =>
-        Text(
+        .map((item) => Text(
           '$item',
           style: TextStyle(fontSize: 18),
         ))
@@ -47,25 +48,39 @@ class _HomePageState extends State<HomePage>
     return Container(
       child: SafeArea(
           child: DefaultTabController(
-              length: titleList.length,
-              child: Column(
-                children: <Widget>[
-                  tabBar,
-                  Expanded(
-                    child: Container(
-                      color: Colors.white70,
-                      width: double.infinity,
-                      alignment: Alignment.center,
-//                          child: Text('$selectType', style: TextStyle(fontSize: 26),),
-                      child: FlutterTabBarView(
-                        tabController: _tabController,
-                      ),
-                    ),
-                  )
-                ],
-              ))),
+              length: titleList.length, child: getNestedScrollView(tabBar))),
     );
   }
+}
+
+Widget getNestedScrollView(Widget tabBar) {
+  return NestedScrollView(
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          SliverToBoxAdapter(
+            child: Container(
+              color: Colors.white,
+              padding: const EdgeInsets.all(10.0),
+              child: SearchTextFieldWidget(
+                hintText: '用一部电影来形容你的2018',
+              ),
+            ),
+          ),
+          SliverPersistentHeader(
+              floating: true,
+              pinned: true,
+              delegate: _SliverAppBarDelegate(
+                  maxHeight: 49.0,
+                  minHeight: 49.0,
+                  child: Container(
+                    color: Colors.white,
+                    child: tabBar,
+                  )))
+        ];
+      },
+      body: FlutterTabBarView(
+        tabController: _tabController,
+      ));
 }
 
 class FlutterTabBar extends StatefulWidget {
@@ -77,6 +92,74 @@ class FlutterTabBar extends StatefulWidget {
   }
 }
 
+Widget _buildSearch() {
+  return Card(
+    margin: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+    elevation: 1.0,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+    ),
+    child: Container(
+      padding: EdgeInsets.only(left: 25.0, right: 25.0),
+      height: 45.0,
+      child: Center(
+        child: Row(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 8.0),
+              child: Icon(
+                Icons.search,
+                color: Colors.black26,
+                size: 20.0,
+              ),
+            ),
+            Expanded(
+                child: TextField(
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Search category',
+                      hintStyle: TextStyle(color: Colors.black26)),
+                  cursorColor: Colors.pink,
+                ))
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  _SliverAppBarDelegate({
+    @required this.minHeight,
+    @required this.maxHeight,
+    @required this.child,
+  });
+
+  final double minHeight;
+  final double maxHeight;
+  final Widget child;
+
+  @override
+  double get minExtent => minHeight;
+
+  @override
+  double get maxExtent => math.max((minHeight ?? kToolbarHeight), minExtent);
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return child;
+  }
+
+  @override
+  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
+    return maxHeight != oldDelegate.maxHeight ||
+        minHeight != oldDelegate.minHeight ||
+        child != oldDelegate.child;
+  }
+}
+
 class _FlutterTabBarState extends State<FlutterTabBar> {
   Color selectColor, unselectedColor;
   TextStyle selectStyle, unselectedStyle;
@@ -85,7 +168,7 @@ class _FlutterTabBarState extends State<FlutterTabBar> {
   void initState() {
     super.initState();
     selectColor = Color.fromARGB(255, 45, 45, 45);
-    unselectedColor = Color.fromARGB(255,177,177,177);
+    unselectedColor = Color.fromARGB(255, 117, 117, 117);
     selectStyle = TextStyle(fontSize: 18, color: selectColor);
     unselectedStyle = TextStyle(fontSize: 18, color: selectColor);
   }
@@ -97,18 +180,20 @@ class _FlutterTabBarState extends State<FlutterTabBar> {
   }
 
   @override
-  Widget build(BuildContext context){
-
-    return TabBar(
-      tabs: tabList,
-      isScrollable: true,
-      controller: _tabController,
-      indicatorColor: selectColor,
-      labelColor: selectColor,
-      labelStyle: selectStyle,
-      unselectedLabelColor: unselectedColor,
-      unselectedLabelStyle: unselectedStyle,
-      indicatorSize: TabBarIndicatorSize.label,
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+      child: TabBar(
+        tabs: tabList,
+        isScrollable: true,
+        controller: _tabController,
+        indicatorColor: selectColor,
+        labelColor: selectColor,
+        labelStyle: selectStyle,
+        unselectedLabelColor: unselectedColor,
+        unselectedLabelStyle: unselectedStyle,
+        indicatorSize: TabBarIndicatorSize.label,
+      ),
     );
   }
 }
