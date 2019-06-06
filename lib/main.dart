@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/widgets/MainPageWidget.dart';
 import 'package:flutter_demo/widgets/SearchTextFieldWidget.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -10,6 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       home: Scaffold(
+        resizeToAvoidBottomPadding: false,
         body: SafeArea(child: MainPageWidget()),
       ),
     );
