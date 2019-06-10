@@ -23,6 +23,9 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
+  # 管理你的app下载到本地的文件缓存。它使用缓存控制HTTP报头有效地检索文件
+  # https://pub.dartlang.org/packages/flutter_cache_manager
+  flutter_cache_manager: ^0.2.0+1
 
 dev_dependencies:
   flutter_test:
