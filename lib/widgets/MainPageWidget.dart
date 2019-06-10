@@ -1,7 +1,9 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/widgets/FlutterTabBar.dart';
+import 'package:flutter_demo/pages/GroupPage.dart';
+import 'package:flutter_demo/pages/HomePage.dart';
 import 'package:flutter_demo/pages/MoviePage.dart';
+import 'package:flutter_demo/pages/PersonPage.dart';
+import 'package:flutter_demo/pages/ShopPage.dart';
 
 class MainPageWidget extends StatefulWidget {
   MainPageWidget({Key key}) : super(key: key);
@@ -12,14 +14,49 @@ class MainPageWidget extends StatefulWidget {
   }
 }
 
+class Item {
+  String name;
+
+  IconData icon;
+
+  Item(this.name, this.icon);
+}
+
 class _MainPageWidgetState extends State<MainPageWidget> {
   final List<Widget> pages = [
     HomePage(),
-//    MoviePage(),
-//    GroupPage(),
-//    ShopPage(),
-//    PersonPage()
+    MoviePage(),
+    GroupPage(),
+    ShopPage(),
+    PersonPage()
   ];
+
+
+  final defaultItemColor = Color.fromARGB(255, 125, 125, 125);
+
+  final itemNames = [
+    Item('首页', Icons.home),
+    Item('书影音', Icons.movie),
+    Item('小组', Icons.group),
+    Item('市集', Icons.receipt),
+    Item('我的', Icons.person),
+  ];
+
+  List<BottomNavigationBarItem> itemList;
+
+  @override
+  void initState() {
+    super.initState();
+    itemList = itemNames
+        .map((item) => BottomNavigationBarItem(
+            icon: Icon(
+              item.icon,
+              color: defaultItemColor,
+            ),
+            title: Text(item.name),
+            activeIcon: Icon(item.icon)))
+        .toList();
+  }
 
   int _selectIndex = 0;
 
@@ -40,10 +77,10 @@ class _MainPageWidgetState extends State<MainPageWidget> {
       body: new Stack(
         children: [
           getWidget(0),
-//          getWidget(1),
-//          getWidget(2),
-//          getWidget(3),
-//          getWidget(4),
+          getWidget(1),
+          getWidget(2),
+          getWidget(3),
+          getWidget(4),
         ],
       ),
 //        List<BottomNavigationBarItem>
@@ -53,55 +90,7 @@ class _MainPageWidgetState extends State<MainPageWidget> {
 //    this.backgroundColor,
       backgroundColor: Color.fromARGB(255, 248, 248, 248),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
-
-
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: Color.fromARGB(255, 125, 125, 125),
-              ),
-              title: Text('首页'),
-              activeIcon: Icon(
-                Icons.home,
-              )),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.movie,
-                color: Color.fromARGB(255, 125, 125, 125),
-              ),
-              title: Text('书影音'),
-              activeIcon: Icon(
-                Icons.movie,
-              )),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.group,
-                color: Color.fromARGB(255, 125, 125, 125),
-              ),
-              title: Text('小组'),
-              activeIcon: Icon(
-                Icons.group,
-              )),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.receipt,
-                color: Color.fromARGB(255, 125, 125, 125),
-              ),
-              title: Text('市集'),
-              activeIcon: Icon(
-                Icons.receipt,
-              )),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person,
-                color: Color.fromARGB(255, 125, 125, 125),
-              ),
-              title: Text('我的'),
-              activeIcon: Icon(
-                Icons.person,
-              )),
-        ],
+        items: itemList,
         onTap: (int index) {
           setState(() {
             _selectIndex = index;
@@ -124,6 +113,42 @@ class Page1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text('Page1'),
+    );
+  }
+}
+
+class Page2 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Page2'),
+    );
+  }
+}
+
+class Page3 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Page3'),
+    );
+  }
+}
+
+class Page4 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Page4'),
+    );
+  }
+}
+
+class Page5 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Page5'),
     );
   }
 }
