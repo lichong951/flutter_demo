@@ -3,6 +3,7 @@ import 'package:flutter_demo/widgets/MainPageWidget.dart';
 import 'package:flutter_demo/widgets/SearchTextFieldWidget.dart';
 import 'package:flutter_demo/widgets/image/NetworkImgWidget.dart';
 import 'package:flutter_demo/widgets/TitleWidget.dart';
+import 'package:flutter_demo/pages/movie/TodayPlayMovieWidget.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         resizeToAvoidBottomPadding: false,
         body: SafeArea(
             child:
-            TitleWidget()
+            TodayPlayMovieWidget()
         ),
       ),
     );

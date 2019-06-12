@@ -39,24 +39,21 @@ class _MainPageWidgetState extends State<MainPageWidget> {
     Item('书影音', Icons.movie),
     Item('小组', Icons.group),
     Item('市集', Icons.receipt),
-    Item('我的', Icons.person),
+    Item('我的', Icons.person)
   ];
 
   List<BottomNavigationBarItem> itemList;
+
 
   @override
   void initState() {
     super.initState();
     itemList = itemNames
         .map((item) => BottomNavigationBarItem(
-            icon: Icon(
-              item.icon,
-              color: defaultItemColor,
-            ),
-            title: Text(item.name),
-            activeIcon: Icon(item.icon)))
+        icon: Icon(item.icon, color: defaultItemColor,), title: Text(item.name), activeIcon: Icon(item.icon)))
         .toList();
   }
+
 
   int _selectIndex = 0;
 
@@ -73,6 +70,22 @@ class _MainPageWidgetState extends State<MainPageWidget> {
 
   @override
   Widget build(BuildContext context) {
+//    Scaffold({
+//    Key key,
+//    this.appBar,
+//    this.body,
+//    this.floatingActionButton,
+//    this.floatingActionButtonLocation,
+//    this.floatingActionButtonAnimator,
+//    this.persistentFooterButtons,
+//    this.drawer,
+//    this.endDrawer,
+//    this.bottomNavigationBar,
+//    this.bottomSheet,
+//    this.backgroundColor,
+//    this.resizeToAvoidBottomPadding = true,
+//    this.primary = true,
+//    })
     return Scaffold(
       body: new Stack(
         children: [
