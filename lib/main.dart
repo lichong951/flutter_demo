@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo/widgets/MainPageWidget.dart';
 import 'package:flutter_demo/widgets/SearchTextFieldWidget.dart';
 import 'package:flutter_demo/widgets/image/NetworkImgWidget.dart';
+import 'package:flutter_demo/widgets/TitleWidget.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,12 +15,13 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         resizeToAvoidBottomPadding: false,
         body: SafeArea(
-            child: NetworkImgWidget(
-                placeHolderAsset:
-                    'assets/images/ic_default_img_subject_movie.9.png',
-                imgUrl:
-                    'http://img1.doubanio.com/view/photo/s_ratio_poster/public/p457760035.webp')),
+            child:
+            TitleWidget()
+        ),
       ),
     );
   }
 }
+//http://img1.doubanio.com/view/photo/s_ratio_poster/public/p457760035.webp
+
+
