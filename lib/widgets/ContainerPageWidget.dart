@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/pages/GroupPage.dart';
-import 'package:flutter_demo/pages/HomePage.dart';
 import 'package:flutter_demo/pages/MoviePage.dart';
 import 'package:flutter_demo/pages/PersonPage.dart';
 import 'package:flutter_demo/pages/ShopPage.dart';
+import 'package:flutter_demo/pages/home/HomePage.dart';
 
-class MainPageWidget extends StatefulWidget {
-  MainPageWidget({Key key}) : super(key: key);
+class ContainerPageWidget extends StatefulWidget {
+  ContainerPageWidget({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _MainPageWidgetState();
+    return _ContainerPageWidgetState();
   }
 }
 
@@ -22,7 +22,7 @@ class Item {
   Item(this.name, this.icon);
 }
 
-class _MainPageWidgetState extends State<MainPageWidget> {
+class _ContainerPageWidgetState extends State<ContainerPageWidget> {
   final List<Widget> pages = [
     HomePage(),
     MoviePage(),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/widgets/MainPageWidget.dart';
+import 'package:flutter_demo/widgets/ContainerPageWidget.dart';
 import 'package:flutter_demo/widgets/SearchTextFieldWidget.dart';
 import 'package:flutter_demo/widgets/image/NetworkImgWidget.dart';
 import 'package:flutter_demo/widgets/TitleWidget.dart';
@@ -15,14 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       home: Scaffold(
         resizeToAvoidBottomPadding: false,
-        body: SafeArea(
-            child:
-            TodayPlayMovieWidget([
-              'https://img3.doubanio.com/view/photo/s_ratio_poster/public/p480747492.webp',
-              'https://img1.doubanio.com/view/photo/s_ratio_poster/public/p1150103377.webp',
-              'https://img1.doubanio.com/view/photo/s_ratio_poster/public/p1374786017.webp'
-            ])
-        ),
+        body: SafeArea(child: ContainerPageWidget()),
       ),
     );
   }
