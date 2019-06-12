@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/pages/DouBanDemo.dart';
+import 'package:flutter_demo/pages/movie/MoviePage.dart';
 
 class FlutterTabBarView extends StatefulWidget {
   final TabController tabController;
@@ -22,9 +24,9 @@ class _FlutterTabBarViewState extends State<FlutterTabBarView> {
   void initState() {
     super.initState();
     viewList = [
-      Page1(),
+      MoviePage(),
       Page2(),
-      Page3(),
+      DouBanListView(),
       Page4(),
       Page5(),
       Page1(),
@@ -33,7 +35,13 @@ class _FlutterTabBarViewState extends State<FlutterTabBarView> {
 
   @override
   Widget build(BuildContext context) {
-    print('build FlutterTabBarView');
+//    TabBarView({
+//    Key key,
+//    @required this.children,
+//    this.controller,
+//    this.physics,
+//    })
+  print('build FlutterTabBarView');
     return TabBarView(
       children: viewList,
       controller: tabController,
@@ -44,7 +52,7 @@ class _FlutterTabBarViewState extends State<FlutterTabBarView> {
 class Page1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print('build page1');
+    print('build Page1');
 
     return Center(
       child: Text('Page1'),
@@ -72,8 +80,8 @@ class Page3 extends StatelessWidget {
     );
   }
 }
-class Page4 extends StatelessWidget {
 
+class Page4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('build Page4');
@@ -82,8 +90,8 @@ class Page4 extends StatelessWidget {
     );
   }
 }
-class Page5 extends StatelessWidget {
 
+class Page5 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('build Page5');

@@ -10,15 +10,14 @@ class DouBanListView extends StatefulWidget {
   }
 }
 
-class DouBanState extends State<DouBanListView>
-    with AutomaticKeepAliveClientMixin {
+class DouBanState extends State<DouBanListView> with AutomaticKeepAliveClientMixin{
   var subjects = [];
 
   var itemHeight = 150.0;
 
   requestMovieTop() async {
     var httpClient = new HttpClient();
-
+    //http://api.douban.com/v2/movie/top250?start=25&count=10
     var uri = new Uri.http(
         'api.douban.com', '/v2/movie/top250', {'start': '0', 'count': '150'});
     var request = await httpClient.getUrl(uri);
@@ -45,10 +44,11 @@ class DouBanState extends State<DouBanListView>
 
   getListViewContainer() {
     if (subjects.length == 0) {
+      //loading
       return CupertinoActivityIndicator();
     }
-
     return ListView.builder(
+        //item 的数量
         itemCount: subjects.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
@@ -76,6 +76,7 @@ class DouBanState extends State<DouBanListView>
         });
   }
 
+  //肖申克的救赎(1993) View
   getTitleView(subject) {
     var title = subject['title'];
     var year = subject['year'];
@@ -91,11 +92,11 @@ class DouBanState extends State<DouBanListView>
             style: TextStyle(
                 fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
           ),
-          Text(
-            '($year)',
-            style: TextStyle(
-                fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
-          )
+          Text('($year)',
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey))
         ],
       ),
     );
@@ -118,6 +119,7 @@ class DouBanState extends State<DouBanListView>
     );
   }
 
+  //圆角图片
   getImage(var imgUrl) {
     return Container(
       decoration: BoxDecoration(
@@ -136,6 +138,7 @@ class DouBanState extends State<DouBanListView>
     );
   }
 
+  //电影标题，星标评分，演员简介Container
   getMovieInfoView(var subject) {
     var start = subject['rating']['average'];
     return Container(
@@ -151,6 +154,7 @@ class DouBanState extends State<DouBanListView>
     );
   }
 
+  //NO.1 图标
   numberWidget(var no) {
     return Container(
       child: Text(
@@ -165,12 +169,27 @@ class DouBanState extends State<DouBanListView>
     );
   }
 
+//
+//  Flutter中为了节约内存不会保存widget的状态，widget都是临时变量。当我们使用TabBar，TabBarView是我们就会发现，切换tab后再重新切换回上一页面，这时候tab会重新加载重新创建，体验很不友好。Flutter出于自己的设计考虑并没有延续android的ViewPager这样的缓存页面设计，毕竟控件两端都要开发，目前还在beta版本有很多设计还不够完善，但是设计的拓展性没得说，flutter还是为我们提供了解决办法。我们可以强制widget不显示情况下保留状态，下回再加载时就不用重新创建了。
+//
+//  AutomaticKeepAliveClientMixin
+//  AutomaticKeepAliveClientMixin 是一个抽象状态，使用也很简单，我们只需要用我们自己的状态继承这个抽象状态，并实现 wantKeepAlive 方法即可。
+//
+//  继承这个状态后，widget在不显示之后也不会被销毁仍然保存在内存中，所以慎重使用这个方法。
+//  ---------------------
+//  作者：唯夜
+//  来源：CSDN
+//  原文：https://blog.csdn.net/tgbus18990140382/article/details/81181879
+//  版权声明：本文为博主原创文章，转载请附上博文链接！
+
+
   @override
   bool get wantKeepAlive => true;
 }
 
+//类别、演员介绍
 class DescWidget extends StatelessWidget {
-  var subject;
+  final subject;
 
   DescWidget(this.subject);
 
@@ -184,9 +203,10 @@ class DescWidget extends StatelessWidget {
     }
     sb.write("/ ");
     List<String> list = List.generate(
-        casts.lenght, (int index) => casts[index]['name'].toString());
+        casts.length, (int index) => casts[index]['name'].toString());
+
     for (var i = 0; i < list.length; i++) {
-      sb.write('${list[i]}');
+      sb.write('${list[i]} ');
     }
     return Container(
       alignment: Alignment.topLeft,
@@ -203,8 +223,7 @@ class DescWidget extends StatelessWidget {
 
 class RatingBar extends StatelessWidget {
   final stars;
-
-  RatingBar(this.stars, {Key key}) : super(key: key);
+  RatingBar(this.stars, {Key key}):super(key : key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/pages/GroupPage.dart';
-import 'package:flutter_demo/pages/MoviePage.dart';
 import 'package:flutter_demo/pages/PersonPage.dart';
 import 'package:flutter_demo/pages/ShopPage.dart';
 import 'package:flutter_demo/pages/home/HomePage.dart';
+import 'package:flutter_demo/pages/movie/BookAudioVideoPage.dart';
 
 class ContainerPageWidget extends StatefulWidget {
   ContainerPageWidget({Key key}) : super(key: key);
@@ -15,45 +15,47 @@ class ContainerPageWidget extends StatefulWidget {
 }
 
 class Item {
-  String name;
+  String name, activeIcon, normalIcon;
 
-  IconData icon;
-
-  Item(this.name, this.icon);
+  Item(this.name, this.activeIcon, this.normalIcon);
 }
 
 class _ContainerPageWidgetState extends State<ContainerPageWidget> {
   final List<Widget> pages = [
     HomePage(),
-    MoviePage(),
+    BookAudioVideoPage(),
     GroupPage(),
     ShopPage(),
     PersonPage()
   ];
 
-
   final defaultItemColor = Color.fromARGB(255, 125, 125, 125);
 
   final itemNames = [
-    Item('首页', Icons.home),
-    Item('书影音', Icons.movie),
-    Item('小组', Icons.group),
-    Item('市集', Icons.receipt),
-    Item('我的', Icons.person)
+    Item('首页', 'assets/images/ic_tab_home_active.png',
+        'assets/images/ic_tab_home_normal.png'),
+    Item('书影音', 'assets/images/ic_tab_subject_active.png',
+        'assets/images/ic_tab_subject_normal.png'),
+    Item('小组', 'assets/images/ic_tab_group_active.png',
+        'assets/images/ic_tab_group_normal.png'),
+    Item('市集', 'assets/images/ic_tab_shiji_active.png',
+        'assets/images/ic_tab_shiji_normal.png'),
+    Item('我的', 'assets/images/ic_tab_profile_active.png',
+        'assets/images/ic_tab_profile_normal.png')
   ];
 
   List<BottomNavigationBarItem> itemList;
-
 
   @override
   void initState() {
     super.initState();
     itemList = itemNames
         .map((item) => BottomNavigationBarItem(
-        icon: Icon(item.icon, color: defaultItemColor,), title: Text(item.name), activeIcon: Icon(item.icon)))
+            icon: Image.asset(item.normalIcon, width: 30.0, height: 30.0,),
+            title: Text(item.name, style: TextStyle(fontSize: 10.0),),
+            activeIcon: Image.asset(item.activeIcon, width: 30.0, height: 30.0)))
         .toList();
   }
-
 
   int _selectIndex = 0;
 

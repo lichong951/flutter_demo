@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/widgets/ContainerPageWidget.dart';
-import 'package:flutter_demo/widgets/SearchTextFieldWidget.dart';
-import 'package:flutter_demo/widgets/image/NetworkImgWidget.dart';
-import 'package:flutter_demo/widgets/TitleWidget.dart';
-import 'package:flutter_demo/pages/movie/TodayPlayMovieWidget.dart';
 
 void main() => runApp(MyApp());
 
