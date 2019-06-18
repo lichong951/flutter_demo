@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo/pages/movie/TitleWidget.dart';
 import 'package:flutter_demo/pages/movie/TodayPlayMovieWidget.dart';
 
+import 'HotSoonMovieWidget.dart';
+
 class MoviePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -39,7 +41,8 @@ class _MoviePageState extends State<MoviePage> {
             Padding(
               child: todayPlayMovieWidget,
               padding: EdgeInsets.only(top: 25.0),
-            )
+            ),
+            HotSoonMovieWidget()
           ]))
         ],
       ),
