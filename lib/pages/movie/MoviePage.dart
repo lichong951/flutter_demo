@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/bean/MovieBean.dart';
 import 'package:flutter_demo/http/API.dart';
 import 'package:flutter_demo/pages/movie/TitleWidget.dart';
 import 'package:flutter_demo/pages/movie/TodayPlayMovieWidget.dart';
+import 'package:flutter_demo/widgets/SubjectMarkImageWidget.dart';
 
 import 'HotSoonMovieWidget.dart';
+import 'HotSoonTabBar.dart';
 
 var _api = API();
 
@@ -17,57 +20,73 @@ class MoviePage extends StatefulWidget {
 
 class _MoviePageState extends State<MoviePage> {
   Widget titleWidget, todayPlayMovieWidget, hotSoonMovieWidgetPadding;
-  HotSoonMovieWidget hotSoonMovieWidget;
+  HotSoonTabBar hotSoonTabBar;
   var total = 0; //正在热映
-  List<Widget> children;
+  double childAspectRatio = 355.0 / 506.0;
+  List<MovieBean> hotMovieBeans = List();
+  int selectIndex = 0;//选中的是热映、即将上映
 
   @override
   void initState() {
     super.initState();
-    titleWidget = TitleWidget();
-    hotSoonMovieWidget = HotSoonMovieWidget();
-    todayPlayMovieWidget = TodayPlayMovieWidget([
-      'https://img3.doubanio.com/view/photo/s_ratio_poster/public/p792776858.webp',
-      'https://img1.doubanio.com/view/photo/s_ratio_poster/public/p1374786017.webp',
-      'https://img3.doubanio.com/view/photo/s_ratio_poster/public/p917846733.webp',
-    ]);
-
-    hotSoonMovieWidgetPadding = Padding(
-      child: hotSoonMovieWidget,
-      padding: EdgeInsets.only(top: 25.0),
+    titleWidget = Padding(
+      padding: EdgeInsets.only(top: 10.0),
+      child: TitleWidget(),
     );
-    children = [
-      Padding(
-        padding: EdgeInsets.only(top: 10.0),
-        child: titleWidget,
-      ),
-      Padding(
-        child: todayPlayMovieWidget,
-        padding: EdgeInsets.only(top: 22.0),
-      ),
-      hotSoonMovieWidgetPadding
-    ];
+
+    todayPlayMovieWidget = Padding(
+      child: TodayPlayMovieWidget([
+        'https://img3.doubanio.com/view/photo/s_ratio_poster/public/p792776858.webp',
+        'https://img1.doubanio.com/view/photo/s_ratio_poster/public/p1374786017.webp',
+        'https://img3.doubanio.com/view/photo/s_ratio_poster/public/p917846733.webp',
+      ]),
+      padding: EdgeInsets.only(top: 22.0),
+    );
+    hotSoonTabBar = HotSoonTabBar(
+      onTabCallBack: (index) {
+        setState(() {
+          selectIndex = index;
+        });
+      },
+    );
 
     _api.getIntheaters((movieBeanList) {
-      //List<MovieBean>
-      hotSoonMovieWidget.setHotMovieBeanList(movieBeanList);
-//      if (!children.contains(hotSoonMovieWidgetPadding)) {
-//        children.add(hotSoonMovieWidgetPadding);
-//        setState(() {});
-//      }
+      hotSoonTabBar.setCount(movieBeanList);
+      setState(() {
+        hotMovieBeans = movieBeanList;
+      });
+    });
+
+    _api.commingSoon((comingSoonList){
+      hotSoonTabBar.setComingSoon(comingSoonList);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      padding: EdgeInsets.only(left: 10.0, right: 10.0),
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverList(delegate: SliverChildListDelegate(children))
-        ],
-      ),
+    return CustomScrollView(
+      shrinkWrap: true,
+      slivers: <Widget>[
+        SliverToBoxAdapter(
+          child: titleWidget,
+        ),
+        SliverToBoxAdapter(
+          child: todayPlayMovieWidget,
+        ),
+        SliverToBoxAdapter(
+          child: hotSoonTabBar,
+        ),
+        SliverGrid(
+            delegate:
+                SliverChildBuilderDelegate((BuildContext context, int index) {
+              return SubjectMarkImageWidget(hotMovieBeans[index].images.large);
+            }, childCount: hotMovieBeans.length),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+                childAspectRatio: childAspectRatio))
+      ],
     );
   }
 }
