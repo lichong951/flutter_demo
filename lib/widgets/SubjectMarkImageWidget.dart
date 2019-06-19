@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo/widgets/image/CachedNetworkImage.dart';
 
 typedef BoolCallback = void Function(bool markAdded);
+
 //test http://img1.doubanio.com/view/photo/s_ratio_poster/public/p457760035.webp
 ///点击图片变成订阅状态的缓存图片控件
 class SubjectMarkImageWidget extends StatefulWidget {
   final imgNetUrl;
   final BoolCallback markAdd;
 
-  SubjectMarkImageWidget({
+  SubjectMarkImageWidget(
+    this.imgNetUrl, {
     Key key,
-    this.imgNetUrl,
     this.markAdd,
   }) : super(key: key);
 
@@ -64,12 +65,15 @@ class _SubjectMarkImageState extends State<SubjectMarkImageWidget> {
 
   Widget getCacheImg(String imgNetUrl) {
     var defaultImg =
-    Image.asset('assets/images/ic_default_img_subject_movie.9.png');
-    return ClipRRect(child: CachedNetworkImage(
-      imageUrl: imgNetUrl,
-      placeholder: defaultImg,
-      fadeInDuration: const Duration(milliseconds: 80),
-      fadeOutDuration: const Duration(milliseconds: 80),
-    ), borderRadius: BorderRadius.all(Radius.circular(10.0)),);
+        Image.asset('assets/images/ic_default_img_subject_movie.9.png');
+    return ClipRRect(
+      child: CachedNetworkImage(
+        imageUrl: imgNetUrl,
+        placeholder: defaultImg,
+        fadeInDuration: const Duration(milliseconds: 80),
+        fadeOutDuration: const Duration(milliseconds: 80),
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+    );
   }
 }
