@@ -1,3 +1,4 @@
+import 'package:flutter_demo/bean/ComingSoonBean.dart';
 import 'package:flutter_demo/bean/MovieBean.dart';
 import 'package:flutter_demo/http/HttpRequest.dart';
 
