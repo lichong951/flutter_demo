@@ -3,6 +3,7 @@ import 'package:flutter_demo/bean/MovieBean.dart';
 import 'package:flutter_demo/http/API.dart';
 import 'package:flutter_demo/pages/movie/TitleWidget.dart';
 import 'package:flutter_demo/pages/movie/TodayPlayMovieWidget.dart';
+import 'package:flutter_demo/widgets/RatingBar.dart';
 import 'package:flutter_demo/widgets/SubjectMarkImageWidget.dart';
 
 import 'HotSoonMovieWidget.dart';
@@ -19,12 +20,12 @@ class MoviePage extends StatefulWidget {
 }
 
 class _MoviePageState extends State<MoviePage> {
-  Widget titleWidget, todayPlayMovieWidget, hotSoonMovieWidgetPadding;
+  Widget titleWidget, todayPlayMovieWidget, hotSoonTabBarPadding;
   HotSoonTabBar hotSoonTabBar;
   var total = 0; //正在热映
-  double childAspectRatio = 355.0 / 506.0;
+  double childAspectRatio = 364.0 / 641.0;
   List<MovieBean> hotMovieBeans = List();
-  int selectIndex = 0;//选中的是热映、即将上映
+  int selectIndex = 0; //选中的是热映、即将上映
 
   @override
   void initState() {
@@ -50,6 +51,11 @@ class _MoviePageState extends State<MoviePage> {
       },
     );
 
+    hotSoonTabBarPadding = Padding(
+      padding: EdgeInsets.only(top: 35.0, bottom: 15.0),
+      child: hotSoonTabBar,
+    );
+
     _api.getIntheaters((movieBeanList) {
       hotSoonTabBar.setCount(movieBeanList);
       setState(() {
@@ -57,36 +63,60 @@ class _MoviePageState extends State<MoviePage> {
       });
     });
 
-    _api.commingSoon((comingSoonList){
+    _api.commingSoon((comingSoonList) {
       hotSoonTabBar.setComingSoon(comingSoonList);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      shrinkWrap: true,
-      slivers: <Widget>[
-        SliverToBoxAdapter(
-          child: titleWidget,
-        ),
-        SliverToBoxAdapter(
-          child: todayPlayMovieWidget,
-        ),
-        SliverToBoxAdapter(
-          child: hotSoonTabBar,
-        ),
-        SliverGrid(
-            delegate:
-                SliverChildBuilderDelegate((BuildContext context, int index) {
-              return SubjectMarkImageWidget(hotMovieBeans[index].images.large);
-            }, childCount: hotMovieBeans.length),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 10.0,
-                mainAxisSpacing: 10.0,
-                childAspectRatio: childAspectRatio))
-      ],
+    return Padding(
+      padding: EdgeInsets.only(left: 15.0, right: 15.0),
+      child: CustomScrollView(
+        shrinkWrap: true,
+        slivers: <Widget>[
+          SliverToBoxAdapter(
+            child: titleWidget,
+          ),
+          SliverToBoxAdapter(
+            child: todayPlayMovieWidget,
+          ),
+          SliverToBoxAdapter(
+            child: hotSoonTabBarPadding,
+          ),
+          SliverGrid(
+              delegate:
+                  SliverChildBuilderDelegate((BuildContext context, int index) {
+                var hotMovieBean = hotMovieBeans[index];
+                return Container(
+                  child: Column(
+                    children: <Widget>[
+                      SubjectMarkImageWidget(hotMovieBean.images.large),
+//                      Padding(
+//                        padding: EdgeInsets.only(top: 5.0),
+//                        child: Container(
+//                          width: double.infinity,
+//                          child: Text(
+//                            hotMovieBean.title,
+//                            style: TextStyle(
+//                                color: Colors.black,
+//                                fontSize: 13,
+//                                fontWeight: FontWeight.bold),
+//                          ),
+//                        ),
+//                      ),
+                      RatingBar(hotMovieBean.rating.average, size: 14.0,)
+                    ],
+                  ),
+                );
+              }, childCount: hotMovieBeans.length),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                  childAspectRatio: childAspectRatio))
+        ],
+      ),
     );
   }
 }
