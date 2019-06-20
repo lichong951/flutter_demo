@@ -25,11 +25,12 @@ class MoviePage extends StatefulWidget {
 class _MoviePageState extends State<MoviePage> {
   Widget titleWidget, todayPlayMovieWidget, hotSoonTabBarPadding;
   HotSoonTabBar hotSoonTabBar;
-  var total = 0; //正在热映
-  double childAspectRatio = 393.0 / 914.0;
   List<MovieBean> hotMovieBeans = List();
   List<ComingSoonBean> comingSoonBeans = List();
+  var hotChildAspectRatio;
+  var comingSoonChildAspectRatio;
   int selectIndex = 0; //选中的是热映、即将上映
+  var itemW;
 
   @override
   void initState() {
@@ -77,8 +78,13 @@ class _MoviePageState extends State<MoviePage> {
 
   @override
   Widget build(BuildContext context) {
-    var itemW = (MediaQuery.of(context).size.width - 30.0 - 20.0) / 3;
-    childAspectRatio = itemW / childAspectRatio;
+    if (itemW == null) {
+      itemW = (MediaQuery.of(context).size.width - 30.0 - 20.0) / 3;
+//      hotChildAspectRatio = itemW / 121.0 * (377.0 / 674.0);
+      hotChildAspectRatio = (377.0 / 674.0);
+//      comingSoonChildAspectRatio = itemW / 121.0 * (377.0 / 712.0);
+      comingSoonChildAspectRatio = (377.0 / 742.0);
+    }
     return Padding(
       padding: EdgeInsets.only(left: 15.0, right: 15.0),
       child: CustomScrollView(
@@ -104,44 +110,52 @@ class _MoviePageState extends State<MoviePage> {
                 if (comingSoonBeans.length > 0) {
                   comingSoonBean = comingSoonBeans[index];
                 }
-                print('nfeowj');
                 return Stack(
                   children: <Widget>[
                     Offstage(
                       child: getComingSoonItem(comingSoonBean, itemW),
-                      offstage: selectIndex == 1 &&
+                      offstage: !(selectIndex == 1 &&
                           comingSoonBeans != null &&
-                          comingSoonBeans.length > 0,
+                          comingSoonBeans.length > 0),
                     ),
                     Offstage(
                         child: getHotMovieItem(hotMovieBean, itemW),
-                        offstage: selectIndex == 0 &&
+                        offstage: !(selectIndex == 0 &&
                             hotMovieBeans != null &&
-                            hotMovieBeans.length > 0)
+                            hotMovieBeans.length > 0))
                   ],
                 );
-              }, childCount: math.min(getChildCount(), 9)),
+              }, childCount: math.min(getChildCount(), 6)),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   crossAxisSpacing: 10.0,
                   mainAxisSpacing: 0.0,
-                  childAspectRatio: childAspectRatio))
+                  childAspectRatio: getRadio()))
         ],
       ),
     );
   }
 
+  ///即将上映item
   Widget getComingSoonItem(ComingSoonBean comingSoonBean, var itemW) {
+    if(comingSoonBean == null){
+      return Container();
+    }
+    ///将2019-02-14转成02月14日
+    String mainland_pubdate = comingSoonBean.mainland_pubdate;
+    mainland_pubdate = mainland_pubdate.substring(5, mainland_pubdate.length);
+    mainland_pubdate = mainland_pubdate.replaceFirst(RegExp(r'-'), '月') +'日';
     return Container(
       alignment: Alignment.topLeft,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SubjectMarkImageWidget(
             comingSoonBean.images.large,
             width: itemW,
           ),
           Padding(
-            padding: EdgeInsets.only(top: 5.0),
+            padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
             child: Container(
               width: double.infinity,
               child: Text(
@@ -168,11 +182,11 @@ class _MoviePageState extends State<MoviePage> {
               ),
               child: Padding(
                 padding: EdgeInsets.only(
-                    left: 5.0, right: 5.0, top: 2.0, bottom: 2.0),
+                    left: 5.0, right: 5.0, ),
                 child: Text(
-                  comingSoonBean.mainland_pubdate,
+                  mainland_pubdate,
                   style: TextStyle(
-                      fontSize: 12.0, color: ColorConstant.colorRed277),
+                      fontSize: 8.0, color: ColorConstant.colorRed277),
                 ),
               ))
         ],
@@ -180,7 +194,11 @@ class _MoviePageState extends State<MoviePage> {
     );
   }
 
+  ///影院热映item
   Widget getHotMovieItem(MovieBean hotMovieBean, var itemW) {
+    if(hotMovieBean == null){
+      return Container();
+    }
     return Container(
       child: Column(
         children: <Widget>[
@@ -221,6 +239,14 @@ class _MoviePageState extends State<MoviePage> {
       return hotMovieBeans.length;
     } else {
       return comingSoonBeans.length;
+    }
+  }
+
+  double getRadio() {
+    if (selectIndex == 0) {
+      return hotChildAspectRatio;
+    } else {
+      return comingSoonChildAspectRatio;
     }
   }
 }
