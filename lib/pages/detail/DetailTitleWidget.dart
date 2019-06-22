@@ -19,6 +19,7 @@ class DetailTitleWidget extends StatelessWidget {
     var genres = list2String(bean.genres);
     var pubdates = list2String(bean.pubdates);
     var durations = list2String(bean.durations);
+    var btnPressedColor = Color(shadowColor.value - 7);
     return Row(
       children: <Widget>[
         Card(
@@ -40,7 +41,10 @@ class DetailTitleWidget extends StatelessWidget {
               children: <Widget>[
                 Text(
                   bean.title,
-                  style: TextStyle(fontSize: 22.0, color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 22.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 5.0, bottom: 7.0),
@@ -49,15 +53,35 @@ class DetailTitleWidget extends StatelessWidget {
                     style: TextStyle(fontSize: 15.0, color: Colors.white),
                   ),
                 ),
-                Text(
-                  '$countries/$genres/上映时间：$pubdates/片长：$durations',
-                  style: TextStyle(fontSize: 12.0, color: Colors.white70),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 5.0),
+                  child: Text(
+                    '$countries/$genres/上映时间：$pubdates/片长：$durations',
+                    style: TextStyle(fontSize: 12.0, color: Colors.white70),
+                  ),
                 ),
-                LookConfirmButton(
-                  btnText: '想看',
-                  iconAsset: 'assets/images/ic_info_wish.png',
-                  defaultColor: Colors.white,
-                  pressedColor: Colors.pinkAccent,
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: LookConfirmButton(
+                        btnText: '想看',
+                        iconAsset: 'assets/images/ic_info_wish.png',
+                        defaultColor: Colors.white,
+                        pressedColor: btnPressedColor,
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.0),
+                    ),
+                    Expanded(
+                      child: LookConfirmButton(
+                        btnText: '看过',
+                        iconAsset: 'assets/images/ic_info_done.png',
+                        defaultColor: Colors.white,
+                        pressedColor: btnPressedColor,
+                      ),
+                    )
+                  ],
                 ),
               ],
             ),
