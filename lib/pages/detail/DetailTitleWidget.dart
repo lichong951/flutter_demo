@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo/bean/MovieDetailBean.dart';
 import 'package:flutter_demo/constant/Constant.dart';
 
+import 'LookConfirmButton.dart';
+
 class DetailTitleWidget extends StatelessWidget {
   final MovieDetailBean bean;
   final Color shadowColor;
@@ -50,6 +52,12 @@ class DetailTitleWidget extends StatelessWidget {
                 Text(
                   '$countries/$genres/上映时间：$pubdates/片长：$durations',
                   style: TextStyle(fontSize: 12.0, color: Colors.white70),
+                ),
+                LookConfirmButton(
+                  btnText: '想看',
+                  iconAsset: 'assets/images/ic_info_wish.png',
+                  defaultColor: Colors.white,
+                  pressedColor: Colors.pinkAccent,
                 ),
               ],
             ),

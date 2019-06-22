@@ -55,13 +55,15 @@ class _DetailPageState extends State<DetailPage> {
     return Scaffold(
       backgroundColor: pickColor,
       body: Container(
-        margin: EdgeInsets.only(left: Constant.MARGIN_LEFT, right: Constant.MARGIN_RIGHT),
+        margin: EdgeInsets.only(
+            left: Constant.MARGIN_LEFT, right: Constant.MARGIN_RIGHT),
         child: SafeArea(
             child: CustomScrollView(
           slivers: <Widget>[
             SliverToBoxAdapter(
               child: DetailTitleWidget(_movieDetailBean, pickColor),
-            )
+            ),
+
           ],
         )),
       ),
