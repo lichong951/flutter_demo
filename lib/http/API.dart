@@ -1,5 +1,6 @@
 import 'package:flutter_demo/bean/ComingSoonBean.dart';
 import 'package:flutter_demo/bean/MovieBean.dart';
+import 'package:flutter_demo/bean/MovieDetailBean.dart';
 import 'package:flutter_demo/bean/WeeklyBean.dart';
 import 'package:flutter_demo/http/HttpRequest.dart';
 import 'dart:math' as math;
@@ -73,5 +74,13 @@ class API {
     List<WeeklyBean> list =
         resultList.map<WeeklyBean>((item) => WeeklyBean.fromMap(item)).toList();
     requestCallBack(list);
+  }
+
+  ///26266893 电影条目信息
+  void getMovieDetail(subjectId, RequestCallBack requestCallBack) async {
+    final result = await _request.get(
+        '/v2/movie/subject/$subjectId?apikey=0b2bdeda43b5688921839c8ecb20399b');
+    MovieDetailBean bean = MovieDetailBean.fromJson(result);
+    requestCallBack(bean);
   }
 }
