@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo/bean/ComingSoonBean.dart';
 import 'package:flutter_demo/bean/MovieBean.dart';
 import 'package:flutter_demo/constant/ColorConstant.dart';
+import 'package:flutter_demo/constant/Constant.dart';
 import 'package:flutter_demo/http/API.dart';
 import 'package:flutter_demo/pages/movie/ItemCountTitle.dart';
 import 'package:flutter_demo/pages/movie/TitleWidget.dart';
 import 'package:flutter_demo/pages/movie/TodayPlayMovieWidget.dart';
 import 'package:flutter_demo/widgets/RatingBar.dart';
 import 'package:flutter_demo/widgets/SubjectMarkImageWidget.dart';
+import 'package:flutter_demo/widgets/image/CacheImgRadius.dart';
 
 import 'HotSoonMovieWidget.dart';
 import 'HotSoonTabBar.dart';
@@ -151,10 +153,12 @@ class _MoviePageState extends State<MoviePage> {
                   crossAxisSpacing: 10.0,
                   mainAxisSpacing: 0.0,
                   childAspectRatio: getRadio())),
+          getCommonImg(Constant.IMG_TMP1, null),
           SliverToBoxAdapter(
             child: hotTitlePadding,
           ),
-          getCommonSliverGrid(hotBeans)
+          getCommonSliverGrid(hotBeans),
+          getCommonImg(Constant.IMG_TMP2, null),
         ],
       ),
     );
@@ -165,6 +169,7 @@ class _MoviePageState extends State<MoviePage> {
     if (comingSoonBean == null) {
       return Container();
     }
+
     ///将2019-02-14转成02月14日
     String mainland_pubdate = comingSoonBean.mainland_pubdate;
     mainland_pubdate = mainland_pubdate.substring(5, mainland_pubdate.length);
@@ -288,4 +293,24 @@ class _MoviePageState extends State<MoviePage> {
             mainAxisSpacing: 0.0,
             childAspectRatio: hotChildAspectRatio));
   }
+
+
+  getCommonImg(String url, OnTab onTab) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: EdgeInsets.only(top: 15.0),
+        child: CacheImgRadius(
+          imgUrl: url,
+          radius: 5.0,
+          onTab: (){
+            if(onTab != null){
+              onTab();
+            }
+          },
+        ),
+      ),
+    );
+  }
 }
+
+typedef OnTab = void Function();
