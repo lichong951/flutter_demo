@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/bean/ComingSoonBean.dart';
 import 'package:flutter_demo/bean/MovieBean.dart';
+import 'package:flutter_demo/bean/TopItemBean.dart';
+import 'package:flutter_demo/bean/WeeklyBean.dart';
 import 'package:flutter_demo/constant/ColorConstant.dart';
 import 'package:flutter_demo/constant/Constant.dart';
 import 'package:flutter_demo/http/API.dart';
 import 'package:flutter_demo/pages/movie/ItemCountTitle.dart';
 import 'package:flutter_demo/pages/movie/TitleWidget.dart';
 import 'package:flutter_demo/pages/movie/TodayPlayMovieWidget.dart';
+import 'package:flutter_demo/pages/movie/TopItemWidget.dart';
 import 'package:flutter_demo/widgets/RatingBar.dart';
 import 'package:flutter_demo/widgets/SubjectMarkImageWidget.dart';
 import 'package:flutter_demo/widgets/image/CacheImgRadius.dart';
@@ -32,7 +35,7 @@ class _MoviePageState extends State<MoviePage> {
       hotTitlePadding;
   HotSoonTabBar hotSoonTabBar;
   ItemCountTitle hotTitle; //豆瓣热门
-  TopItemWidget topItemWidget;
+  TopItemWidget weeklyTop, weeklyHot, weeklyTop250; //周口碑榜单、周热门榜单、top250
   List<MovieBean> hotShowBeans = List(); //影院热映
   List<ComingSoonBean> comingSoonBeans = List(); //即将上映
   List<MovieBean> hotBeans = List(); //豆瓣热门
@@ -41,6 +44,7 @@ class _MoviePageState extends State<MoviePage> {
   var comingSoonChildAspectRatio;
   int selectIndex = 0; //选中的是热映、即将上映
   var itemW;
+  var imgSize;
 
   @override
   void initState() {
@@ -78,7 +82,9 @@ class _MoviePageState extends State<MoviePage> {
       child: hotTitle,
     );
 
-    topItemWidget = TopItemWidget();
+    weeklyTop = TopItemWidget();
+    weeklyHot = TopItemWidget();
+    weeklyTop250 = TopItemWidget();
 
     requestAPI();
   }
@@ -86,6 +92,7 @@ class _MoviePageState extends State<MoviePage> {
   @override
   Widget build(BuildContext context) {
     if (itemW == null) {
+      imgSize = MediaQuery.of(context).size.width / 5 * 3;
       itemW = (MediaQuery.of(context).size.width - 30.0 - 20.0) / 3;
 //      hotChildAspectRatio = itemW / 121.0 * (377.0 / 674.0);
       hotChildAspectRatio = (377.0 / 674.0);
@@ -144,14 +151,7 @@ class _MoviePageState extends State<MoviePage> {
           ),
           getCommonSliverGrid(hotBeans),
           getCommonImg(Constant.IMG_TMP2, null),
-          SliverToBoxAdapter(
-            child: Container(
-              color: Colors.deepPurpleAccent,
-              width: 273,
-              height: 273,
-              child: topItemWidget,
-            ),
-          )
+//          topSliverList(),
         ],
       ),
     );
@@ -327,8 +327,23 @@ class _MoviePageState extends State<MoviePage> {
 
     _api.getWeekly((weeklyBeanList) {
       weeklyBeans = weeklyBeanList;
-      topItemWidget.setData(weeklyBeans);
+      weeklyTop.setData(TopItemBean.convertWeeklyBeans(weeklyBeans));
     });
+
+
+  }
+
+  ///豆瓣榜单
+  SliverToBoxAdapter topSliverList() {
+    return SliverToBoxAdapter(
+      child: Container(
+        height: imgSize,
+        child: ListView(
+          children: <Widget>[weeklyTop, weeklyHot, weeklyTop250],
+          scrollDirection: Axis.horizontal,
+        ),
+      ),
+    );
   }
 }
 
