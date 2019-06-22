@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/bean/TopItemBean.dart';
 import 'package:flutter_demo/bean/WeeklyBean.dart';
+import 'package:flutter_demo/constant/ColorConstant.dart';
 import 'package:flutter_demo/widgets/image/CachedNetworkImage.dart';
+import 'package:flutter_demo/widgets/image/PickImgMainColor.dart';
 
 TopItemBean _bean;
 
@@ -30,6 +32,7 @@ var _imgSize;
 class _TopItemWidgetState extends State<TopItemWidget> {
   var title;
   TopItemBean _bean;
+  Color partColor = Colors.brown;
 
   _TopItemWidgetState(this.title);
 
@@ -57,19 +60,19 @@ class _TopItemWidgetState extends State<TopItemWidget> {
               imageUrl: _bean.imgUrl,
             ),
             Positioned(
-              top: 8.0,
-              right: 15.0,
+                top: 8.0,
+                right: 15.0,
                 child: Text(
-              _bean.count,
-              style: TextStyle(fontSize: 12.0, color: Colors.white),
-            )),
+                  _bean.count,
+                  style: TextStyle(fontSize: 12.0, color: Colors.white),
+                )),
             Positioned(
               top: _imgSize / 2 - 40.0,
               left: 30.0,
               child: Text(
                 title,
                 style: TextStyle(
-                  fontSize: 18.0,
+                  fontSize: 21.0,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
@@ -80,9 +83,19 @@ class _TopItemWidgetState extends State<TopItemWidget> {
               child: Container(
                 height: _imgSize / 2,
                 width: _imgSize,
-                color: Colors.brown,
+                color: partColor,
               ),
-            )
+            ),
+            Positioned(
+                top: _imgSize / 2,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 10.0, left: 10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: getChildren(_bean.items),
+                  ),
+                ))
           ],
         ),
       ),
@@ -90,8 +103,42 @@ class _TopItemWidgetState extends State<TopItemWidget> {
   }
 
   void setData(TopItemBean bean) {
+    PickImgMainColor.pick(NetworkImage(bean.imgUrl), (Color color) {
+      setState(() {
+        partColor = color;
+      });
+    });
     setState(() {
       _bean = bean;
     });
+  }
+
+  ///电影列表
+  Widget getItem(Item item, int i) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(right: 5.0),
+          child: Text(
+            '$i. ${item.title}',
+            style: TextStyle(fontSize: 13.0, color: Colors.white),
+          ),
+        ),
+        Text(
+          '${item.average}',
+          style: TextStyle(fontSize: 11.0, color: ColorConstant.colorOrigin),
+        ),
+      ],
+    );
+  }
+
+  List<Widget> getChildren(List<Item> items) {
+    List<Widget> list = [];
+    for (int i = 0; i < items.length; i++) {
+      list.add(getItem(items[i], i + 1));
+    }
+    return list;
   }
 }
