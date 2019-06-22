@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo/bean/TopItemBean.dart';
 import 'package:flutter_demo/bean/WeeklyBean.dart';
 import 'package:flutter_demo/constant/ColorConstant.dart';
+import 'package:flutter_demo/util/PickImgMainColor.dart';
 import 'package:flutter_demo/widgets/image/CachedNetworkImage.dart';
-import 'package:flutter_demo/widgets/image/PickImgMainColor.dart';
 
 TopItemBean _bean;
 

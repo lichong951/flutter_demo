@@ -25,6 +25,12 @@ class MyApp extends StatelessWidget {
   }
 }
 //http://img1.doubanio.com/view/photo/s_ratio_poster/public/p457760035.webp
+//
+//const ImageColors(
+//title: 'Image Colors',
+//image: NetworkImage('https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2541901817.jpg'),
+//imageSize: Size(256.0, 170.0),
+//)
 
 class DemoApp extends StatefulWidget {
   @override
