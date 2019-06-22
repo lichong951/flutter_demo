@@ -3,44 +3,47 @@ import 'package:flutter/cupertino.dart';
 
 typedef VoidCallback = void Function();
 
-Color _defaultColor;
-
 ///想看、看过的按钮
 class LookConfirmButton extends StatefulWidget {
   final String btnText;
   final String iconAsset;
-
   final Color pressedColor;
   final VoidCallback onPressed;
+  final Color defaultColor;
 
   LookConfirmButton(
       {Key key,
       @required this.btnText,
       @required this.iconAsset,
-      @required defaultColor,
       @required this.pressedColor,
+      @required this.defaultColor,
       this.onPressed})
-      : super(key: key) {
-    _defaultColor = defaultColor;
-  }
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _State();
+    return _State(defaultColor);
   }
 }
 
 class _State extends State<LookConfirmButton> {
-  var color = _defaultColor;
+  var _color;
+  Color _defaultColor;
+
+  _State(Color color) {
+    _color = color;
+    _defaultColor = color;
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Container(
         alignment: Alignment.center,
-        height: 44.0,
+        height: 35.0,
         decoration: BoxDecoration(
-            color: color, borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            color: _color,
+            borderRadius: BorderRadius.all(Radius.circular(5.0))),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -66,14 +69,19 @@ class _State extends State<LookConfirmButton> {
       },
       onTapDown: (TapDownDetails details) {
         setState(() {
-          color = widget.pressedColor;
+          _color = widget.pressedColor;
         });
       },
       onTapUp: (TapUpDetails details) {
         setState(() {
-          color = _defaultColor;
+          _color = _defaultColor;
         });
       },
+      onTapCancel: ((){
+        setState(() {
+          _color = _defaultColor;
+        });
+      }),
     );
   }
 }

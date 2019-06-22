@@ -19,12 +19,19 @@ class DetailTitleWidget extends StatelessWidget {
     var genres = list2String(bean.genres);
     var pubdates = list2String(bean.pubdates);
     var durations = list2String(bean.durations);
-    var btnPressedColor = Color(shadowColor.value - 7);
+    //将按下的颜色设置较为浅色
+    var btnPressedColor =
+        Color.fromARGB(100, shadowColor.red, shadowColor.red, shadowColor.red);
     return Row(
       children: <Widget>[
         Card(
           //影音海报
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(6.0)),
+          ),
           color: shadowColor,
+          clipBehavior: Clip.antiAlias,
+          elevation: 10.0,
           child: Image.network(
             bean.images.large,
             width: imgW,
@@ -71,7 +78,7 @@ class DetailTitleWidget extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 10.0),
+                      padding: EdgeInsets.only(left: 15.0),
                     ),
                     Expanded(
                       child: LookConfirmButton(
