@@ -32,9 +32,11 @@ class _MoviePageState extends State<MoviePage> {
       hotTitlePadding;
   HotSoonTabBar hotSoonTabBar;
   ItemCountTitle hotTitle; //豆瓣热门
+  TopItemWidget topItemWidget;
   List<MovieBean> hotShowBeans = List(); //影院热映
   List<ComingSoonBean> comingSoonBeans = List(); //即将上映
   List<MovieBean> hotBeans = List(); //豆瓣热门
+  List<WeeklyBean> weeklyBeans = List(); //一周口碑电影榜
   var hotChildAspectRatio;
   var comingSoonChildAspectRatio;
   int selectIndex = 0; //选中的是热映、即将上映
@@ -76,26 +78,9 @@ class _MoviePageState extends State<MoviePage> {
       child: hotTitle,
     );
 
-    _api.getIntheaters((movieBeanList) {
-      hotSoonTabBar.setCount(movieBeanList);
-      setState(() {
-        hotShowBeans = movieBeanList;
-      });
-    });
+    topItemWidget = TopItemWidget();
 
-    _api.commingSoon((comingSoonList) {
-      hotSoonTabBar.setComingSoon(comingSoonList);
-      setState(() {
-        comingSoonBeans = comingSoonList;
-      });
-    });
-
-    _api.getHot((hotBeanList) {
-      setState(() {
-        hotBeans = hotBeanList;
-        hotTitle.setCount(hotBeans.length);
-      });
-    });
+    requestAPI();
   }
 
   @override
@@ -159,6 +144,14 @@ class _MoviePageState extends State<MoviePage> {
           ),
           getCommonSliverGrid(hotBeans),
           getCommonImg(Constant.IMG_TMP2, null),
+          SliverToBoxAdapter(
+            child: Container(
+              color: Colors.deepPurpleAccent,
+              width: 273,
+              height: 273,
+              child: topItemWidget,
+            ),
+          )
         ],
       ),
     );
@@ -294,7 +287,7 @@ class _MoviePageState extends State<MoviePage> {
             childAspectRatio: hotChildAspectRatio));
   }
 
-
+  ///R角图片
   getCommonImg(String url, OnTab onTab) {
     return SliverToBoxAdapter(
       child: Padding(
@@ -302,14 +295,40 @@ class _MoviePageState extends State<MoviePage> {
         child: CacheImgRadius(
           imgUrl: url,
           radius: 5.0,
-          onTab: (){
-            if(onTab != null){
+          onTab: () {
+            if (onTab != null) {
               onTab();
             }
           },
         ),
       ),
     );
+  }
+
+  void requestAPI() {
+    _api.getIntheaters((movieBeanList) {
+      hotSoonTabBar.setCount(movieBeanList);
+      setState(() {
+        hotShowBeans = movieBeanList;
+      });
+    });
+
+    _api.commingSoon((comingSoonList) {
+      hotSoonTabBar.setComingSoon(comingSoonList);
+      setState(() {
+        comingSoonBeans = comingSoonList;
+      });
+    });
+
+    _api.getHot((hotBeanList) {
+      hotBeans = hotBeanList;
+      hotTitle.setCount(hotBeans.length);
+    });
+
+    _api.getWeekly((weeklyBeanList) {
+      weeklyBeans = weeklyBeanList;
+      topItemWidget.setData(weeklyBeans);
+    });
   }
 }
 
