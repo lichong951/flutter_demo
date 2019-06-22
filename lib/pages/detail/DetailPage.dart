@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_demo/bean/MovieDetailBean.dart';
+import 'package:flutter_demo/constant/Constant.dart';
 import 'package:flutter_demo/http/API.dart';
 import 'package:flutter_demo/pages/detail/DetailTitleWidget.dart';
 import 'package:flutter_demo/util/PickImgMainColor.dart';
@@ -53,14 +54,17 @@ class _DetailPageState extends State<DetailPage> {
     }
     return Scaffold(
       backgroundColor: pickColor,
-      body: SafeArea(
-          child: CustomScrollView(
-        slivers: <Widget>[
-          SliverToBoxAdapter(
-            child: DetailTitleWidget(_movieDetailBean, pickColor),
-          )
-        ],
-      )),
+      body: Container(
+        margin: EdgeInsets.only(left: Constant.MARGIN_LEFT, right: Constant.MARGIN_RIGHT),
+        child: SafeArea(
+            child: CustomScrollView(
+          slivers: <Widget>[
+            SliverToBoxAdapter(
+              child: DetailTitleWidget(_movieDetailBean, pickColor),
+            )
+          ],
+        )),
+      ),
     );
   }
 }
