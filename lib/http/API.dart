@@ -1,4 +1,5 @@
 import 'package:flutter_demo/bean/ComingSoonBean.dart';
+import 'package:flutter_demo/bean/CommentBean.dart';
 import 'package:flutter_demo/bean/MovieBean.dart';
 import 'package:flutter_demo/bean/MovieDetailBean.dart';
 import 'package:flutter_demo/bean/WeeklyBean.dart';
@@ -88,8 +89,10 @@ class API {
 
   ///电影短评
   ///https://api.douban.com/v2/movie/subject/26266893/comments?apikey=0b2bdeda43b5688921839c8ecb20399b
-  void getComents(subjectId, RequestCallBack requestCallBack) async {
+  void getComments(subjectId, RequestCallBack requestCallBack) async {
     final result = await _request.get(
         '/v2/movie/subject/$subjectId/comments?apikey=0b2bdeda43b5688921839c8ecb20399b');
+    CommentsEntity bean = CommentsEntity.fromJson(result);
+    requestCallBack(bean);
   }
 }
