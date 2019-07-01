@@ -6,6 +6,8 @@ import 'package:flutter_demo/http/API.dart';
 import 'package:flutter_demo/pages/detail/DetailTitleWidget.dart';
 import 'package:flutter_demo/pages/detail/ScoreStartWidget.dart';
 import 'package:flutter_demo/util/PickImgMainColor.dart';
+import 'package:flutter_demo/widgets/image/CachedNetworkImage.dart';
+import 'dart:math' as math;
 
 ///影片、电视详情页面
 class DetailPage extends StatefulWidget {
@@ -85,6 +87,7 @@ class _DetailPageState extends State<DetailPage> {
             ),
             sliverTags(),
             sliverSummary(),
+            sliverCasts(),
           ],
         )),
       ),
@@ -153,6 +156,76 @@ class _DetailPageState extends State<DetailPage> {
           ),
         ],
       ),
+    );
+  }
+
+  ///演职员
+  SliverToBoxAdapter sliverCasts() {
+    return SliverToBoxAdapter(
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 25.0, bottom: 10.0),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                    child: Text('演职员',
+                        style: TextStyle(
+                            fontSize: 17.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold))),
+                Text(
+                  '全部 ${_movieDetailBean.casts.length} >',
+                  style: TextStyle(fontSize: 12.0, color: Colors.white70),
+                )
+              ],
+            ),
+          ),
+          Container(
+            height: 150.0,
+            child: ListView.builder(
+              itemBuilder: ((BuildContext context, int index) {
+                if (index == 0 && _movieDetailBean.directors.isNotEmpty) {
+                  //第一个显示导演
+                  Director director = _movieDetailBean.directors[0];
+                  return getCast(
+                      director.id, director.avatars.large, director.name);
+                } else {
+                  Cast cast = _movieDetailBean.casts[index - 1];
+                  return getCast(cast.id, cast.avatars.large, cast.name);
+                }
+              }),
+              itemCount: math.min(9, _movieDetailBean.casts.length + 1), //最多显示9个演员
+              scrollDirection: Axis.horizontal,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  ///演职表图片
+  Column getCast(String id, String imgUrl, String name) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(bottom: 5.0, right: 14.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+            child: CachedNetworkImage(
+              imageUrl: imgUrl,
+              height: 120.0,
+              width: 80.0,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        Text(
+          name,
+          style: TextStyle(fontSize: 13.0, color: Colors.white),
+        ),
+      ],
     );
   }
 }
