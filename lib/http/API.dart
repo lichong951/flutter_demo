@@ -36,7 +36,8 @@ class API {
         resultList.map<MovieBean>((item) => MovieBean.fromMap(item)).toList();
     requestCallBack(list);
   }
-///https://api.douban.com/v2/movie/in_theaters?apikey=0b2bdeda43b5688921839c8ecb20399b
+
+  ///https://api.douban.com/v2/movie/in_theaters?apikey=0b2bdeda43b5688921839c8ecb20399b
   void getIntheaters(RequestCallBack requestCallBack) async {
     final Map result = await _request.get(IN_THEATERS);
     var resultList = result['subjects'];
@@ -77,10 +78,18 @@ class API {
   }
 
   ///26266893 电影条目信息
+  ///https://api.douban.com/v2/movie/subject/26266893?apikey=0b2bdeda43b5688921839c8ecb20399b
   void getMovieDetail(subjectId, RequestCallBack requestCallBack) async {
     final result = await _request.get(
         '/v2/movie/subject/$subjectId?apikey=0b2bdeda43b5688921839c8ecb20399b');
     MovieDetailBean bean = MovieDetailBean.fromJson(result);
     requestCallBack(bean);
+  }
+
+  ///电影短评
+  ///https://api.douban.com/v2/movie/subject/26266893/comments?apikey=0b2bdeda43b5688921839c8ecb20399b
+  void getComents(subjectId, RequestCallBack requestCallBack) async {
+    final result = await _request.get(
+        '/v2/movie/subject/$subjectId/comments?apikey=0b2bdeda43b5688921839c8ecb20399b');
   }
 }

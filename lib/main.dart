@@ -4,6 +4,7 @@ import 'package:flutter_demo/pages/movie/TitleWidget.dart';
 import 'package:flutter_demo/pages/movie/TodayPlayMovieWidget.dart';
 import 'package:flutter_demo/widgets/ContainerPageWidget.dart';
 import 'package:flutter_demo/widgets/SubjectMarkImageWidget.dart';
+import 'package:flutter_demo/widgets/VideoWidget.dart';
 
 import 'bean/MovieBean.dart';
 import 'http/API.dart';
@@ -19,13 +20,20 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       home: Scaffold(
         resizeToAvoidBottomPadding: false,
-        body: SafeArea(child: ContainerPageWidget()),
+        body: SafeArea(
+            child: ContainerPageWidget()),
       ),
     );
   }
 }
+
+//VideoWidget(
+//'http://vt1.doubanio.com/201902111139/0c06a85c600b915d8c9cbdbbaf06ba9f/view/movie/M/302420330.mp4',
+//previewImgUrl:
+//'https://img3.doubanio.com/img/trailer/medium/2546089641.jpg?1548146239',
+//)
+
 //http://img1.doubanio.com/view/photo/s_ratio_poster/public/p457760035.webp
-//
 //const ImageColors(
 //title: 'Image Colors',
 //image: NetworkImage('https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2541901817.jpg'),
@@ -51,9 +59,7 @@ class _DemoAppState extends State<DemoApp> {
     w = HotSoonMovieWidget();
     _api.getIntheaters((movieBeanList) {
       hotMovieBeans = movieBeanList;
-      setState(() {
-
-      });
+      setState(() {});
     });
   }
 
